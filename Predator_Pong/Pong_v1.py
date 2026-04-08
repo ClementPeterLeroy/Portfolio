@@ -63,7 +63,7 @@ class Ball:
     """Bouncing ball.  Speed magnitude is always constant."""
 
     def __init__(self):
-        self.rect  = pygame.Rect(0, 0, BALL_SIZE, BALL_SIZE)
+        self.rect = pygame.Rect(0, 0, BALL_SIZE, BALL_SIZE)
         self.vel_x = BALL_SPEED
         self.vel_y = BALL_SPEED
         self.reset()
@@ -117,8 +117,8 @@ class Paddle:
     """A side paddle controlled by keyboard keys."""
 
     def __init__(self, x: int, up_key: int, down_key: int):
-        self.rect     = pygame.Rect(x, (HEIGHT - PADDLE_H) // 2, PADDLE_W, PADDLE_H)
-        self.up_key   = up_key
+        self.rect = pygame.Rect(x, (HEIGHT - PADDLE_H) // 2, PADDLE_W, PADDLE_H)
+        self.up_key = up_key
         self.down_key = down_key
 
     # ------------------------------------------------------------------ update
@@ -129,7 +129,7 @@ class Paddle:
             self.rect.y += PADDLE_SPEED
 
         # clamp inside field
-        self.rect.top    = max(0, self.rect.top)
+        self.rect.top = max(0, self.rect.top)
         self.rect.bottom = min(HEIGHT, self.rect.bottom)
 
     # ------------------------------------------------------------------ draw
@@ -137,14 +137,14 @@ class Paddle:
         pygame.draw.rect(surface, WHITE, self.rect, border_radius=4)
 
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -------------------------------------------------------------------
 
 class ScoreBoard:
     """Keeps and renders the score for both players."""
 
     def __init__(self, font: pygame.font.Font):
-        self.font         = font
-        self.score_left   = 0
+        self.font = font
+        self.score_left = 0
         self.score_right  = 0
 
     # ----------------------------------------------------------------- update
@@ -188,20 +188,17 @@ class Game:
 
     # ---------------------------------------------------------------- helpers
     def _build_objects(self):
-        self.paddle_left  = Paddle(PADDLE_MARGIN,
-                                   pygame.K_w, pygame.K_s)
-        self.paddle_right = Paddle(WIDTH - PADDLE_MARGIN - PADDLE_W,
-                                   pygame.K_UP, pygame.K_DOWN)
-        self.ball         = Ball()
-        self.scoreboard   = ScoreBoard(self.font_score)
+        self.paddle_left = Paddle(PADDLE_MARGIN, pygame.K_z, pygame.K_s)
+        self.paddle_right = Paddle(WIDTH - PADDLE_MARGIN - PADDLE_W, pygame.K_UP, pygame.K_DOWN)
+        self.ball = Ball()
+        self.scoreboard = ScoreBoard(self.font_score)
 
     def _draw_field(self):
         self.screen.fill(BLACK)
         # centre dashed line
         dash_h = 18
         for y in range(0, HEIGHT, dash_h * 2):
-            pygame.draw.rect(self.screen, GREY,
-                             (WIDTH // 2 - 2, y, 4, dash_h))
+            pygame.draw.rect(self.screen, GREY, (WIDTH // 2 - 2, y, 4, dash_h))
 
     def _show_message(self, lines: list[str]):
         """Render one or more centred lines and wait for a key press."""
@@ -210,8 +207,7 @@ class Game:
         start_y = (HEIGHT - total_h) // 2
         for i, line in enumerate(lines):
             surf = self.font_msg.render(line, True, WHITE)
-            self.screen.blit(surf, (WIDTH // 2 - surf.get_width() // 2,
-                                    start_y + i * 50))
+            self.screen.blit(surf, (WIDTH // 2 - surf.get_width() // 2, start_y + i * 50))
         pygame.display.flip()
         self._wait_for_key()
 
@@ -230,7 +226,7 @@ class Game:
     # ------------------------------------------------------------------- run
     def run(self):
         self._show_message(["PONG",
-                            "Left:  W / S",
+                            "Left:  Z / S",
                             "Right: ↑ / ↓",
                             "Press any key to start"])
 
@@ -238,14 +234,14 @@ class Game:
         self.ball.reset(direction)
 
         while True:
-            # ── events ────────────────────────────────────────────────────
+            #  events -------------------------------------------------------------------
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self._quit()
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     self._quit()
 
-            # ── update ────────────────────────────────────────────────────
+            #  update -------------------------------------------------------------------
             keys = pygame.key.get_pressed()
             self.paddle_left.update(keys)
             self.paddle_right.update(keys)
@@ -263,7 +259,7 @@ class Game:
                     direction = result   # serve toward the player who just lost
                     self.ball.reset(direction)
 
-            # ── draw ──────────────────────────────────────────────────────
+            #  draw -------------------------------------------------------------------
             self._draw_field()
             self.paddle_left.draw(self.screen)
             self.paddle_right.draw(self.screen)
@@ -274,7 +270,7 @@ class Game:
             self.clock.tick(FPS)
 
 
-# ── Entry point ───────────────────────────────────────────────────────────────
+# Entry point -------------------------------------------------------------------
 
 if __name__ == "__main__":
     Game().run()
