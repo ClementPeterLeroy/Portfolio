@@ -43,9 +43,9 @@ FPS = 60
 WINNING_SCORE = 5
 
 # Colours
-BLACK  = (0, 0, 0)
-WHITE  = (255, 255, 255)
-GREY   = (40, 40, 40)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GREY = (40, 40, 40)
 
 # Ball
 BALL_SIZE = 14
